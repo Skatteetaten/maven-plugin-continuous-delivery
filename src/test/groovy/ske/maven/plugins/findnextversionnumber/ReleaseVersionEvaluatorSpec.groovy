@@ -21,6 +21,15 @@ class ReleaseVersionEvaluatorSpec extends Specification {
         suggestedReleaseVersion.toString() == "2.0"
     }
     
+	def "Suggested versionnumber is X.0.1 when the only existing version to evaluate is X.0"() {
+        given:
+        def existingVersions = ["1.0"]
+        when:
+        def suggestedReleaseVersion = new ReleaseVersionEvaluator("1.0-SNAPSHOT").suggestNextReleaseVersionFrom(existingVersions);
+        then:
+        suggestedReleaseVersion.toString() == "1.0.1"
+    }
+    
 	def "versionnumbers not matching current verison is not taken into consideration"() {
         given:
         def existingVersions = ["1.1", "2.1", "3.1"]
