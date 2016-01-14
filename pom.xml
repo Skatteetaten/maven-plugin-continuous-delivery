@@ -9,6 +9,10 @@
         <mavenVersion>3.3.9</mavenVersion>
     </properties>
 
+    <scm>
+        <developerConnection>scm:git:http://aurora/git/scm/mf/continuous-delivery-maven-plugin.git</developerConnection>
+    </scm>
+    
     <build>
         <plugins>
             <plugin>
@@ -60,6 +64,13 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.8.1</version>
+                <configuration>
+                    <tag>${project.artifactId}-${project.version}</tag>
+                </configuration>
             </plugin>
         </plugins>
     </build>
