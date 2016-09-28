@@ -18,7 +18,8 @@ node {
     echo "My branch is: ${env.BRANCH_NAME} "
 
     if (isMaster) {
-      sh "./mvnw ske.aurora.maven.plugins.continuous-delivery:continuous-delivery:suggest-version versions:set -DnewVersion=${suggestedVersion} -DgenerateBackupPoms=false"
+      def suggestedVersion
+      sh "./mvnw ske.aurora.maven.plugins.continuous-delivery:continuous-delivery:suggest-version versions:set -Dcd.version.accesibleFromProperty=newVersion -DnewVersion=${suggestedVersion} -DgenerateBackupPoms=false"
     } else {
       sh "./mvnw versions:set -DnewVersion=${branchShortName}-SNAPSHOT -DgenerateBackupPoms=false -B"
     }
