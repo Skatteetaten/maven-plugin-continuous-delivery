@@ -12,7 +12,7 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException
 @Mojo(name = "suggest-version", requiresDirectInvocation = true, requiresProject = true, aggregator = true, defaultPhase=LifecyclePhase.VALIDATE)
 class SuggestNextVersionNumberMojo extends AbstractMojo {
 
-    @Parameter(property = "accesibleFromProperty", defaultValue = "suggestedVersion")
+    @Parameter(property = "accesibleFromProperty", defaultValue = "newVersion")
     String accessibleFromProperty
     @Parameter(defaultValue = 'v', required = true)
     String tagBaseName

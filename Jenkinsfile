@@ -19,7 +19,7 @@ node {
 
     if (isMaster) {
       def suggestedVersion
-      sh "./mvnw ske.aurora.maven.plugins.continuous-delivery:continuous-delivery:suggest-version versions:set -Dcd.version.accesibleFromProperty=newVersion -DnewVersion=${suggestedVersion} -DgenerateBackupPoms=false"
+      sh "./mvnw ske.aurora.maven.plugins.continuous-delivery:continuous-delivery:suggest-version versions:set -DgenerateBackupPoms=false"
     } else {
       sh "./mvnw versions:set -DnewVersion=${branchShortName}-SNAPSHOT -DgenerateBackupPoms=false -B"
     }
