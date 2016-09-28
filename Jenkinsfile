@@ -7,7 +7,6 @@ node {
 
   stage('Compile') {
      sh "./mvnw clean install -B"
-     stash excludes: 'target/', includes: '**', name: 'source'
   }
 
   stage('Bump version') {
@@ -34,6 +33,7 @@ node {
 
     // Set build name
     currentBuild.displayName = "$pom.version (${currentBuild.number})"
+    stash excludes: 'target/', includes: '**', name: 'source'
   }
 }
 
