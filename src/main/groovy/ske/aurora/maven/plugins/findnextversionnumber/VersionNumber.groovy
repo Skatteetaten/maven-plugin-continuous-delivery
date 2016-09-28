@@ -1,4 +1,4 @@
-package ske.maven.plugins.versionnumber
+package ske.aurora.maven.plugins.versionnumber
 
 class VersionNumber implements Comparable<VersionNumber> {
     public final static String not_snapshot

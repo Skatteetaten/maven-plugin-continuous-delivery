@@ -1,4 +1,4 @@
-package ske.maven.plugins.versionnumber
+package ske.aurora.maven.plugins.versionnumber
 
 import spock.lang.Specification
 

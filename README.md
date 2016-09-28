@@ -1,7 +1,9 @@
-Plugin for å foreslå hvilket versjonsnummer neste release skal ha. Versjonsnummeret blir eksponert som en maven-property "cd.suggestedVersion". Denne kan benyttes i andre plugins, f.eks. release-plugin eller versions-plugin.  
+Plugin for å foreslå hvilket versjonsnummer neste release skal ha. Versjonsnummeret blir eksponert som en maven-property "suggestedVersion".
+Denne kan benyttes i andre plugins, f.eks. release-plugin eller versions-plugin.
+
 Eksempel:
 
-	mvn ske-cd:suggest-version versions:set -DnewVersion=${cd.suggestedVersion}
+	mvn aurora-cd:suggest-version versions:set -DnewVersion=${suggestedVersion}
 
 Versjonsnummeret beregnes ut fra hvilken snapshotversjon man har og hvilke versjoner som er tagget i git, hvor "-SNAPSHOT" blir erstattet med et inkrement fra nyeste versjon som matcher snapshotversjonen.
 Dersom pom'en angir versjon 1-SNAPSHOT og det ikke eksisterer noen tags i git vil foreslått versjonsnummer være 1.0. Om man har tagget versjonene 1.2, 1.4 og 1.8 vil forslaget for neste versjon være 1.9.

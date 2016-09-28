@@ -1,10 +1,8 @@
-package ske.maven.plugins.versionnumber
+package ske.aurora.maven.plugins.versionnumber
 
 import org.ajoberstar.grgit.Grgit
-import org.ajoberstar.grgit.operation.BranchListOp
 import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.plugin.MojoExecutionException
-import org.apache.maven.plugin.logging.Log
 import org.apache.maven.plugins.annotations.LifecyclePhase
 import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
@@ -13,9 +11,10 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException
 
 @Mojo(name = "suggest-version", requiresDirectInvocation = true, requiresProject = true, aggregator = true, defaultPhase=LifecyclePhase.VALIDATE)
 class SuggestNextVersionNumberMojo extends AbstractMojo {
-    @Parameter(property = "cd.version.accesibleFromProperty", defaultValue = "cd.suggestedVersion")
+
+    @Parameter(property = "accesibleFromProperty", defaultValue = "suggestedVersion")
     String accessibleFromProperty
-    @Parameter(defaultValue = '${project.artifactId}', required = true)
+    @Parameter(defaultValue = 'v', required = true)
     String tagBaseName
     @Parameter(defaultValue = '${project.version}', required = true, readonly = true)
     String currentVersion
