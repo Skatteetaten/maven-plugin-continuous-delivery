@@ -1,4 +1,4 @@
-#!groovy
+#!/usr/bin/env groovy
 
 node {
   stage('Checkout') {
@@ -28,6 +28,7 @@ node {
 
     if (isMaster) {
       echo "Creating git-tag: v-${pom.version}"
+      sh "./mvnw scm:tag"
       sh "git tag -a v${pom.version} -m 'Release ${pom.version} on master'"
       sh "git push --follow-tags"
     }
