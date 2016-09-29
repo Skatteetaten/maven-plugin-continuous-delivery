@@ -17,7 +17,9 @@ node {
     echo "My branch is: ${env.BRANCH_NAME} "
 
     if (isMaster) {
-      sh "./mvnw ske.aurora.maven.plugins.aurora-cd:aurora-cd:suggest-version versions:set -DgenerateBackupPoms=false"
+      // Read pom.xml
+      origPom = readMavenPom file: 'pom.xml'
+      sh "./mvnw ske.aurora.maven.plugins:aurora-cd:${origPom.version}:suggest-version versions:set -DgenerateBackupPoms=false"
     } else {
       sh "./mvnw versions:set -DnewVersion=${branchShortName}-SNAPSHOT -DgenerateBackupPoms=false -B"
     }
@@ -26,7 +28,7 @@ node {
 
     if (isMaster) {
       echo "Creating git-tag: v-${pom.version}"
-      sh "git tag -a v-${pom.version} -m 'Release ${pom.version} on master'"
+      sh "git tag -a v${pom.version} -m 'Release ${pom.version} on master'"
       sh "git push --follow-tags"
     }
 
