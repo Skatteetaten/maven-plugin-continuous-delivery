@@ -29,8 +29,6 @@ node {
     if (isMaster) {
       echo "Creating git-tag: v${pom.version}"
       sh "./mvnw scm:tag -Dusername=ci_aos -Dpassword=ci_aos -B"
-      // sh "git tag -a v${pom.version} -m 'Release ${pom.version} on master'"
-      // sh "git push --follow-tags"
     }
 
     // Set build name
