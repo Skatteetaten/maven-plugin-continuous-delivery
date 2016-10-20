@@ -1,6 +1,7 @@
 package ske.aurora.maven.plugins.versionnumber
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class ReleaseVersionEvaluatorSpec extends Specification {
   def "Suggested version number expands current version number by one segment"() {
@@ -33,14 +34,19 @@ class ReleaseVersionEvaluatorSpec extends Specification {
       suggestedReleaseVersion.toString() == "2.3.0"
   }
 
-  def "Suggested version number is X.0.1 when the only existing version to evaluate is X.0"() {
-    given:
-      def existingVersions = ["1.0.0"]
+  @Unroll
+  def "Suggested version number is #expectedSuggestedReleaseVersion when existing versions are #existingVersions and current version is #currentVersion"() {
     when:
-      def suggestedReleaseVersion = new ReleaseVersionEvaluator("1.0-SNAPSHOT").
+      def suggestedReleaseVersion = new ReleaseVersionEvaluator(currentVersion).
           suggestNextReleaseVersionFrom(existingVersions);
     then:
-      suggestedReleaseVersion.toString() == "1.0.1"
+      suggestedReleaseVersion.toString() == expectedSuggestedReleaseVersion
+
+    where:
+      expectedSuggestedReleaseVersion | currentVersion   | existingVersions
+      "1.0.1"                         | "1.0-SNAPSHOT"   | ["1.0.0"]
+      "1.0.1"                         | "1.0.0-SNAPSHOT" | ["1.0.0"]
+      "1.0.2"                         | "1.0.0-SNAPSHOT" | ["1.0.0", "1.0.1"]
   }
 
   def "version numbers not matching current version is not taken into consideration"() {
