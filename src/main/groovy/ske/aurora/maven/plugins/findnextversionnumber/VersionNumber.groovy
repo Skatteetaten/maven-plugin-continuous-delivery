@@ -53,7 +53,20 @@ class VersionNumber implements Comparable<VersionNumber> {
       other = other.shorten(versionNumberSegments.size())
     }
 
-    return this.versionNumberSegments == other.versionNumberSegments;
+    String thisString = String.join("", this.versionNumberSegments);
+    String otherString = String.join("", other.versionNumberSegments)
+
+    if (this.versionNumberSegments == other.versionNumberSegments) {
+      return true
+    } else {
+      if (this.versionNumberSegments.size >= 1 && Integer.parseInt(thisString[0]) != Integer.parseInt(otherString[0])) {
+        return false
+      } else if (this.versionNumberSegments.size >= 2 && Integer.parseInt(thisString[1]) !=
+          Integer.parseInt(otherString[1])) {
+        return false
+      }
+      return thisString <= otherString;
+    }
   }
 
   public VersionNumber unlockVersion() {

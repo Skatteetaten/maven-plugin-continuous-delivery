@@ -46,7 +46,8 @@ class ReleaseVersionEvaluatorSpec extends Specification {
       expectedSuggestedReleaseVersion | currentVersion   | existingVersions
       "1.0.1"                         | "1.0-SNAPSHOT"   | ["1.0.0"]
       "1.0.1"                         | "1.0.0-SNAPSHOT" | ["1.0.0"]
-      "1.0.2"                         | "1.0.0-SNAPSHOT" | ["1.0.0", "1.0.1"]
+      "1.0.2"                         | "1.0.0-SNAPSHOT" | ["1.0.0", "1.0.1", "2.0.1", "1.2.1"]
+      "1.1.2"                         | "1.1-SNAPSHOT"   | ["1.0.0", "1.1.1", "1.1.0"]
   }
 
   def "version numbers not matching current version is not taken into consideration"() {
