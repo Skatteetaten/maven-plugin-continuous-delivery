@@ -47,6 +47,8 @@ class ReleaseVersionEvaluatorSpec extends Specification {
       "1.0.1"                         | "1.0-SNAPSHOT"   | ["1.0.0"]
       "1.0.1"                         | "1.0.0-SNAPSHOT" | ["1.0.0"]
       "1.0.2"                         | "1.0.0-SNAPSHOT" | ["1.0.0", "1.0.1", "2.0.1", "1.2.1"]
+      "1.0.11"                        | "1.0.0-SNAPSHOT" | [(0..10).collect { "1.0.$it" }, "1.1.0"].flatten()
+      "1.0.11"                        | "1.0.9-SNAPSHOT" | [(0..10).collect { "1.0.$it" }, "1.1.0"].flatten()
       "1.1.2"                         | "1.1-SNAPSHOT"   | ["1.0.0", "1.1.1", "1.1.0"]
   }
 
