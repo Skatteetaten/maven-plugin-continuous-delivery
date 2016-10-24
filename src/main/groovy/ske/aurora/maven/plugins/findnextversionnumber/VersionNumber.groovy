@@ -65,7 +65,7 @@ class VersionNumber implements Comparable<VersionNumber> {
     if (this.versionNumberSegments.size >= 2 && thisString[1] != otherString[1]) {
       return false
     }
-    return thisString <= otherString;
+    return Integer.getInteger(thisString) <= Integer.getInteger(otherString);
   }
 
   public VersionNumber unlockVersion() {
