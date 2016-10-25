@@ -3,7 +3,7 @@ package ske.aurora.maven.plugins.versionnumber
 class VersionNumber implements Comparable<VersionNumber> {
   public final static String not_snapshot
   public static final String snapshot_notation = "-SNAPSHOT"
-  def versionNumberSegments;
+  List<String> versionNumberSegments
   def isSnapshot;
 
   private VersionNumber(versionNumberSegments, isSnapshot = not_snapshot) {
@@ -53,19 +53,15 @@ class VersionNumber implements Comparable<VersionNumber> {
       other = other.shorten(versionNumberSegments.size())
     }
 
-    String thisString = String.join("", this.versionNumberSegments);
+    String thisString = String.join("", this.versionNumberSegments)
     String otherString = String.join("", other.versionNumberSegments)
-
-    if (this.versionNumberSegments == other.versionNumberSegments) {
-      return true
-    }
     if (this.versionNumberSegments.size >= 1 && thisString[0] != otherString[0]) {
       return false
     }
     if (this.versionNumberSegments.size >= 2 && thisString[1] != otherString[1]) {
       return false
     }
-    return Integer.getInteger(thisString) <= Integer.getInteger(otherString);
+    return true
   }
 
   public VersionNumber unlockVersion() {
