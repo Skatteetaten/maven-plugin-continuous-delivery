@@ -53,15 +53,16 @@ class VersionNumber implements Comparable<VersionNumber> {
       other = other.shorten(versionNumberSegments.size())
     }
 
-    String thisString = String.join("", this.versionNumberSegments)
-    String otherString = String.join("", other.versionNumberSegments)
-    if (this.versionNumberSegments.size >= 1 && thisString[0] != otherString[0]) {
+    def thisSegs = this.versionNumberSegments
+    def otherSegs = other.versionNumberSegments
+    this.versionNumberSegments.any {}
+    if (thisSegs.size >= 1 && thisSegs[0] != otherSegs[0]) {
       return false
     }
-    if (this.versionNumberSegments.size >= 2 && thisString[1] != otherString[1]) {
+    if (thisSegs.size >= 2 && thisSegs[1] != otherSegs[1]) {
       return false
     }
-    return true
+    true
   }
 
   public VersionNumber unlockVersion() {
