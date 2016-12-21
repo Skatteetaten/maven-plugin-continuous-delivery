@@ -25,24 +25,24 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   private MavenProject project;
 
   void execute() {
-    try {
-      def currentVersionNumber = VersionNumber.parse(currentVersion)
-      def git = getCurrentGitRepo()
-      def tags = git.tag.list().findAll { it.name.startsWith(tagBaseName) }.
-          collect { it.name - tagBaseName - ~/[^\d]*/ }
-      println tags
-      def suggestedVersion = new ReleaseVersionEvaluator(currentVersion).suggestNextReleaseVersionFrom(tags)
-      project.getProperties().put(accessibleFromProperty, suggestedVersion.toString())
-      getLog().info("Suggested version (${suggestedVersion}) accessible from \${${accessibleFromProperty}}")
-    } catch (RepositoryNotFoundException x) {
-      throw new MojoExecutionException(
-          "Could not open git-repository in current directory. Please make sure the project is contained in a git repository",
-          x);
-    }
+    def git = getCurrentGitRepo()
+    def tags = git.tag.list()
+        .findAll { it.name.startsWith(tagBaseName) }
+        .collect { it.name - tagBaseName - ~/[^\d]*/ }
+
+    def suggestedVersion = new ReleaseVersionEvaluator(currentVersion).suggestNextReleaseVersionFrom(tags)
+
+    project.getProperties().put(accessibleFromProperty, suggestedVersion.toString())
+    getLog().info("Suggested version (${suggestedVersion}) accessible from \${${accessibleFromProperty}}")
   }
 
-  Grgit getCurrentGitRepo() {
-    return Grgit.open(dir: ".");
+  static Grgit getCurrentGitRepo() {
+    try {
+      return Grgit.open(dir: ".");
+    } catch (RepositoryNotFoundException x) {
+      throw new MojoExecutionException("Could not open git-repository in current directory. " +
+          "Please make sure the project is contained in a git repository", x);
+    }
   }
 }
 
