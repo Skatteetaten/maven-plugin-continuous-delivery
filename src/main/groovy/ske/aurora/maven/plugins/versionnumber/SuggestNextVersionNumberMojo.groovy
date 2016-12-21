@@ -14,10 +14,13 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
 
   @Parameter(property = "accesibleFromProperty", defaultValue = "newVersion")
   String accessibleFromProperty
+
   @Parameter(defaultValue = 'v', required = true)
   String tagBaseName
+
   @Parameter(defaultValue = '${project.version}', required = true, readonly = true)
   String currentVersion
+
   @Parameter(defaultValue = '${project}', readonly = true)
   private MavenProject project;
 
