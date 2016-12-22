@@ -96,7 +96,7 @@
     <dependency>
       <groupId>ske.aurora</groupId>
       <artifactId>aurora-git-version</artifactId>
-      <version>1.0.1</version>
+      <version>1.1.4</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
