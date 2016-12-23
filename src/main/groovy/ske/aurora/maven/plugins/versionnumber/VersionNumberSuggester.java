@@ -15,6 +15,9 @@ import ske.aurora.gitversion.GitVersion;
 
 public class VersionNumberSuggester {
 
+    private final Repository repository;
+    private final Options options;
+
     public static String suggestVersion() throws IOException {
         return suggestVersion(new Options());
     }
@@ -22,14 +25,23 @@ public class VersionNumberSuggester {
     public static String suggestVersion(Options options) throws IOException {
 
         Repository repository = getGitRepository();
-
-        if (shouldInferReleaseVersion(repository, options)) {
-            return getInferredVersion(repository, options);
-        }
-        return getVersionFromGit(repository, options);
+        return new VersionNumberSuggester(repository, options).suggestVersion2();
     }
 
-    private static boolean shouldInferReleaseVersion(Repository repository, Options options) throws IOException {
+    private VersionNumberSuggester(Repository repository, Options options) {
+        this.repository = repository;
+        this.options = options;
+    }
+
+    private String suggestVersion2() throws IOException {
+
+        if (shouldInferReleaseVersion()) {
+            return getInferredVersion();
+        }
+        return getVersionFromGit();
+    }
+
+    private boolean shouldInferReleaseVersion() throws IOException {
 
         Optional<String> currentBranchOption = GitTools.getBranchName(repository, true, "BRANCH_NAME");
 
@@ -39,15 +51,15 @@ public class VersionNumberSuggester {
         return options.branchesToInferReleaseVersionsFor.contains(currentBranch);
     }
 
-    private static String getInferredVersion(Repository repository, Options options) {
+    private String getInferredVersion() {
 
-        List<String> versions = getAllVersionsFromTags(repository, options.versionPrefix);
+        List<String> versions = getAllVersionsFromTags();
         VersionNumber inferredVersion =
             new ReleaseVersionEvaluator(options.versionHint).suggestNextReleaseVersionFrom(versions);
         return inferredVersion.toString();
     }
 
-    private static String getVersionFromGit(Repository repository, Options options) throws IOException {
+    private String getVersionFromGit() throws IOException {
 
         GitVersion.Options gitVersionOptions = new GitVersion.Options();
         gitVersionOptions.setVersionPrefix(options.versionPrefix);
@@ -56,8 +68,8 @@ public class VersionNumberSuggester {
         return versionFromGit.getVersion();
     }
 
-    private static List<String> getAllVersionsFromTags(Repository repository, String versionPrefix) {
-
+    private List<String> getAllVersionsFromTags() {
+        String versionPrefix = options.versionPrefix;
         return repository.getTags().entrySet().stream()
             .filter(e -> e.getKey().startsWith(versionPrefix))
             .map(e -> e.getKey().replaceFirst(versionPrefix, ""))
