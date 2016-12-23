@@ -32,7 +32,7 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
 
     def options = new VersionNumberSuggester.Options(
         versionPrefix: tagBaseName,
-        branchesToStipulateReleaseVersionsFor: branchesToStipulateReleaseVersionsFor,
+        branchesToInferReleaseVersionsFor: branchesToStipulateReleaseVersionsFor,
         versionHint: currentVersion
     )
 

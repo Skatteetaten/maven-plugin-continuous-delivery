@@ -21,41 +21,39 @@ public class VersionNumberSuggester {
 
     public static String suggestVersion(Options options) throws IOException {
 
-        FileRepositoryBuilder builder = new FileRepositoryBuilder();
-        Repository repository = builder.setGitDir(new File("./", ".git"))
-            .readEnvironment()
-            .setMustExist(true)
-            .build();
+        Repository repository = getGitRepository();
 
-        GitVersion.Options gitVersionOptions = new GitVersion.Options();
-        gitVersionOptions.setVersionPrefix(options.versionPrefix);
+        if (shouldInferReleaseVersion(repository, options)) {
+            return getInferredVersion(repository, options);
+        }
+        return getVersionFromGit(repository, options);
+    }
 
-        GitVersion.Version versionFromGit = GitVersion.determineVersion(repository, gitVersionOptions);
+    private static boolean shouldInferReleaseVersion(Repository repository, Options options) throws IOException {
 
         Optional<String> currentBranchOption = GitTools.getBranchName(repository, true, "BRANCH_NAME");
 
         String currentBranch = currentBranchOption
             .orElseThrow(() -> new IllegalStateException("Unable to determine name of current branch"));
 
-        return determineVersion(repository, options, versionFromGit, currentBranch);
+        return options.branchesToInferReleaseVersionsFor.contains(currentBranch);
     }
 
-    private static String determineVersion(Repository repository, Options options,
-        GitVersion.Version versionFromGit, String currentBranch) {
-
-        if (!options.branchesToStipulateReleaseVersionsFor.contains(currentBranch)) {
-            return versionFromGit.getVersion();
-        }
-
-        if (versionFromGit.getSource() == GitVersion.VersionSource.TAG) {
-            return versionFromGit.getVersion();
-        }
+    private static String getInferredVersion(Repository repository, Options options) {
 
         List<String> versions = getAllVersionsFromTags(repository, options.versionPrefix);
+        VersionNumber inferredVersion =
+            new ReleaseVersionEvaluator(options.versionHint).suggestNextReleaseVersionFrom(versions);
+        return inferredVersion.toString();
+    }
 
-        VersionNumber stipulatedReleaseVersion = new ReleaseVersionEvaluator(options.versionHint)
-            .suggestNextReleaseVersionFrom(versions);
-        return stipulatedReleaseVersion.toString();
+    private static String getVersionFromGit(Repository repository, Options options) throws IOException {
+
+        GitVersion.Options gitVersionOptions = new GitVersion.Options();
+        gitVersionOptions.setVersionPrefix(options.versionPrefix);
+
+        GitVersion.Version versionFromGit = GitVersion.determineVersion(repository, gitVersionOptions);
+        return versionFromGit.getVersion();
     }
 
     private static List<String> getAllVersionsFromTags(Repository repository, String versionPrefix) {
@@ -66,20 +64,28 @@ public class VersionNumberSuggester {
             .collect(Collectors.toList());
     }
 
+    private static Repository getGitRepository() throws IOException {
+        FileRepositoryBuilder builder = new FileRepositoryBuilder();
+        return builder.setGitDir(new File("./", ".git"))
+            .readEnvironment()
+            .setMustExist(true)
+            .build();
+    }
+
     public static class Options {
 
-        List<String> branchesToStipulateReleaseVersionsFor = Collections.singletonList("master");
+        List<String> branchesToInferReleaseVersionsFor = Collections.singletonList("master");
 
         String versionPrefix = "v";
 
         String versionHint = null;
 
-        public List<String> getBranchesToStipulateReleaseVersionsFor() {
-            return branchesToStipulateReleaseVersionsFor;
+        public List<String> getBranchesToInferReleaseVersionsFor() {
+            return branchesToInferReleaseVersionsFor;
         }
 
-        public void setBranchesToStipulateReleaseVersionsFor(List<String> branchesToStipulateReleaseVersionsFor) {
-            this.branchesToStipulateReleaseVersionsFor = branchesToStipulateReleaseVersionsFor;
+        public void setBranchesToInferReleaseVersionsFor(List<String> branchesToInferReleaseVersionsFor) {
+            this.branchesToInferReleaseVersionsFor = branchesToInferReleaseVersionsFor;
         }
 
         public String getVersionPrefix() {
