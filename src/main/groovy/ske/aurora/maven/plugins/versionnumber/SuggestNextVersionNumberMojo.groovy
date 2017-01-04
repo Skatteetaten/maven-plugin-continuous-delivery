@@ -6,6 +6,9 @@ import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
 import org.apache.maven.project.MavenProject
 
+import ske.aurora.version.SuggesterOptions
+import ske.aurora.version.VersionNumberSuggester
+
 @Mojo(name = "suggest-version", requiresDirectInvocation = true, requiresProject = true, aggregator = true, defaultPhase = LifecyclePhase.VALIDATE)
 class SuggestNextVersionNumberMojo extends AbstractMojo {
 
@@ -30,7 +33,7 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
         .split(',').
         collect { it.trim() }
 
-    def options = new VersionNumberSuggester.Options(
+    def options = new SuggesterOptions(
         versionPrefix: tagBaseName,
         branchesToInferReleaseVersionsFor: branchesToStipulateReleaseVersionsFor,
         versionHint: currentVersion
@@ -41,6 +44,5 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
     project.getProperties().put(accessibleFromProperty, suggestedVersion)
     getLog().info("Suggested version (${suggestedVersion}) accessible from \${${accessibleFromProperty}}")
   }
-
 }
 
