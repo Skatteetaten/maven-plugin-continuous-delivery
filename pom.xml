@@ -96,7 +96,7 @@
     <dependency>
       <groupId>ske.aurora</groupId>
       <artifactId>aurora-git-version</artifactId>
-      <version>1.2.0-RC1</version>
+      <version>AOS-711-generere-semantisk-riktige-versjoner-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
