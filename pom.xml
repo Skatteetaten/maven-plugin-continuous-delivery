@@ -96,7 +96,7 @@
     <dependency>
       <groupId>ske.aurora</groupId>
       <artifactId>aurora-git-version</artifactId>
-      <version>1.2.3</version>
+      <version>1.2.4</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
