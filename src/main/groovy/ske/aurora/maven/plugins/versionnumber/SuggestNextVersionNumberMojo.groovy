@@ -21,6 +21,9 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = '${project.version}', required = true, readonly = true)
   String currentVersion
 
+  @Parameter(defaultValue = "true", required = false)
+  Boolean inferReleaseVersionsForBranches
+
   @Parameter(defaultValue = 'master', required = true)
   String branchesToInferReleaseVersionsForCsv
 
@@ -29,9 +32,11 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
 
   void execute() {
 
-    List<String> branchesToInferReleaseVersionsFor = branchesToInferReleaseVersionsForCsv
-        .split(',').
-        collect { it.trim() }
+    List<String> branchesToInferReleaseVersionsFor = []
+
+    if (inferReleaseVersionsForBranches) {
+      branchesToInferReleaseVersionsFor = branchesToInferReleaseVersionsForCsv.split(',').collect { it.trim() }
+    }
 
     def options = new SuggesterOptions(
         versionPrefix: tagBaseName,
