@@ -1,4 +1,4 @@
-package ske.aurora.maven.plugins.versionnumber
+package no.skatteetaten.aurora.maven.plugins.versionnumber
 
 import org.apache.maven.plugin.AbstractMojo
 import org.apache.maven.plugins.annotations.LifecyclePhase
@@ -6,8 +6,8 @@ import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
 import org.apache.maven.project.MavenProject
 
-import ske.aurora.version.SuggesterOptions
-import ske.aurora.version.VersionNumberSuggester
+import no.skatteetaten.aurora.version.SuggesterOptions
+import no.skatteetaten.aurora.version.VersionNumberSuggester
 
 @Mojo(name = "suggest-version", requiresDirectInvocation = true, requiresProject = true, aggregator = true, defaultPhase = LifecyclePhase.VALIDATE)
 class SuggestNextVersionNumberMojo extends AbstractMojo {
