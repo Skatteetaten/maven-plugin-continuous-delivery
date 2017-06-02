@@ -1,24 +1,24 @@
 # Aurora CD plugin
 
-Plugin for å foreslå hvilket versjonsnummer neste release skal ha. Versjonsnummeret blir eksponert som maven-property "newVersion". 
+Maven plugin to suggest versionnumber for the next release. The version number will be exposed as maven-property "newVersion".
 
-Navnet kan endres ved å sette:
+The name can be changed by setting:
 
     -Dcd.version.accesibleFromProperty=<property-navn> 
 
-Denne kan benyttes i andre plugins, f.eks. release-plugin eller versions-plugin.
+Can be used in other plugins, like release-plugin or versions-plugin
 
-Eksempel:
+Example:
 
 	mvn aurora-cd:suggest-version versions:set -DnewVersion=${suggestedVersion}
 
-Se https://aurora/git/projects/AUF/repos/aurora-git-version/browse for mer informasjon om hvordan versjonen blir satt.
+See https://github.com/skatteetaten/aurora-git-version for more information on how version is set.
 
 ## Properties
 
-| Property | Default-verdi | Beskrivelse |
+| Property | Default-value | Beskrivelse |
 |----------|---------------|-------------|
-| accesibleFromProperty | newVersion | Property hvor den foreslåtte versjonen blir gjort tilgjengelig |
-| tagBaseName | v | Prefix for versjons-tager som brukes til å foreslå versjonsnummer. Alle tags på formen vX.X.X blir brukt for å foreslå neste versjonsnummer.|
-| inferReleaseVersionsForBranches | true | aurora-cd:suggest-version vil foreslå release-versjoner for alle branches listet i propertyen `branchesToInferReleaseVersionsForCsv`.|
-| branchesToInferReleaseVersionsForCsv | master | Branches som det skal foreslås release-versjoner for dersom `inferReleaseVersionsForBranches` er satt til true. |
+| accesibleFromProperty | newVersion | Property where the suggest version is available.  |
+| tagBaseName | v | Prefix for versjon-tags that is used to suggest versionnumber. All tags in the pattern vX.X.X will be used to suggest the next versionnumber.|
+| inferReleaseVersionsForBranches | true | aurora-cd:suggest-version will suggest release-version for all branches listed in the property `branchesToInferReleaseVersionsForCsv`.|
+| branchesToInferReleaseVersionsForCsv | master | Branches to suggest release-version from if `inferReleaseVersionsForBranches` is true. |
