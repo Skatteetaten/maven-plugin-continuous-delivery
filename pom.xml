@@ -7,6 +7,10 @@
   <packaging>maven-plugin</packaging>
   <version>2.0.2</version>
 
+
+  <name>aurora-cd</name>
+  <description>Maven plugin to auto suggest version based upon git tags and pom.version</description>
+  <url>https://github.com/Skatteetaten/maven-plugin-continous-delivery</url>
   <properties>
     <mavenVersion>3.3.9</mavenVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,9 +26,9 @@
   </licenses>
 
   <scm>
-    <url>https://github.com/skatteetaten/checkstyle-config</url>
-    <connection>scm:git:git://github.com/skatteetaten/checkstyle-config.git</connection>
-    <developerConnection>scm:git:git@github.com:skatteetaten/checkstyle-config.git</developerConnection>
+    <url>https://github.com/Skatteetaten/maven-plugin-continous-delivery</url>
+    <connection>scm:git:git://github.com/skatteetaten/maven-plugin-continous-delivery.git</connection>
+    <developerConnection>scm:git:git@github.com:skatteetaten/maven-plugin-continous-delivery.git</developerConnection>
   </scm>
 
   <developers>
