@@ -28,15 +28,15 @@ node {
 
     stage('Bump version') {
         origPom = readMavenPom file: 'pom.xml'
-        version = maven.run("no.skatteetaten.aurora.maven.plugins:aurora-cd:${origPom.version}:suggest-version versions:set -DgenerateBackupPoms=false", props)
+        maven.run("no.skatteetaten.aurora.maven.plugins:aurora-cd:${origPom.version}:suggest-version versions:set -DgenerateBackupPoms=false", props)
         // Read pom.xml
         pom = readMavenPom file: 'pom.xml'
 
         // Set build name
         currentBuild.displayName = "$pom.version (${currentBuild.number})"
 
-        if (!version.endsWith("-SNAPSHOT")) {
-            git.tagIfNotExists(props.credentialsId, "v$version")
+        if (!pom.version.endsWith("-SNAPSHOT")) {
+            git.tagIfNotExists(props.credentialsId, "v$pom.version")
         }
     }
 
