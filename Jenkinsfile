@@ -28,7 +28,7 @@ node {
 
     stage('Bump version') {
         origPom = readMavenPom file: 'pom.xml'
-        def version = maven.run("no.skatteetaten.aurora.maven.plugins:aurora-cd:${origPom.version}:suggest-version versions:set -DgenerateBackupPoms=false", props)
+        version = maven.run("no.skatteetaten.aurora.maven.plugins:aurora-cd:${origPom.version}:suggest-version versions:set -DgenerateBackupPoms=false", props)
         // Read pom.xml
         pom = readMavenPom file: 'pom.xml'
 
