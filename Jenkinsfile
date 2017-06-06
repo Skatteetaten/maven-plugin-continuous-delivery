@@ -11,7 +11,7 @@ fileLoader.withGit('https://git.aurora.skead.no/scm/ao/aurora-pipeline-scripts.g
 }
 
 Map<String, Object> props = [:]
-props.put('deployProperties', '-P sign, build-extras')
+props.put('deployProperties', "-P sign, build-extras")
 props.put('mavenSettingsFile', 'github-maven-settings')
 props.put('pomPath', 'pom.xml')
 props.put('credentialsId', 'github_bjartek')
