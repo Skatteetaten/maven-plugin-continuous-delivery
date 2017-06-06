@@ -3,8 +3,8 @@
 def git
 def maven
 def utilitiesl
-def version='v3.0.0'
-fileLoader.withGit('https://git.aurora.skead.no/scm/ao/aurora-pipeline-scripts.git', version) {
+def scriptVersion='v3.0.0'
+fileLoader.withGit('https://git.aurora.skead.no/scm/ao/aurora-pipeline-scripts.git', scriptVersion) {
     git = fileLoader.load('git/git')
     maven = fileLoader.load('maven/maven')
     utilities = fileLoader.load('utilities/utilities')
@@ -14,6 +14,7 @@ Map<String, Object> props = [:]
 props.put('deployProperties', '-P sign, build-extras')
 props.put('mavenSettingsFile', 'github-maven-settings')
 props.put('pomPath', 'pom.xml')
+props.put('credentialsId', 'github_bjartek')
 
 node {
     stage('Checkout and Preparation') {
@@ -27,7 +28,7 @@ node {
 
     stage('Bump version') {
         origPom = readMavenPom file: 'pom.xml'
-        maven.run("no.skatteetaten.aurora.maven.plugins:aurora-cd:${origPom.version}:suggest-version versions:set -DgenerateBackupPoms=false", props)
+        def version = maven.run("no.skatteetaten.aurora.maven.plugins:aurora-cd:${origPom.version}:suggest-version versions:set -DgenerateBackupPoms=false", props)
         // Read pom.xml
         pom = readMavenPom file: 'pom.xml'
 
