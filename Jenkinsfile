@@ -2,7 +2,6 @@
 
 def git
 def maven
-def utilitiesl
 def scriptVersion='v3.0.0'
 fileLoader.withGit('https://git.aurora.skead.no/scm/ao/aurora-pipeline-scripts.git', scriptVersion) {
     git = fileLoader.load('git/git')

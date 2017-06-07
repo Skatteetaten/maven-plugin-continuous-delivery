@@ -11,11 +11,11 @@
   <name>aurora-cd</name>
   <description>Maven plugin to auto suggest version based upon git tags and pom.version</description>
   <url>https://github.com/Skatteetaten/maven-plugin-continous-delivery</url>
+
   <properties>
     <mavenVersion>3.5.0</mavenVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
 
   <licenses>
     <license>
