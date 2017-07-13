@@ -14,7 +14,7 @@ deployProperties = "-P sign,build-extras"
 props.put('deployProperties', deployProperties)
 props.put('mavenSettingsFile', 'github-maven-settings')
 props.put('pomPath', 'pom.xml')
-props.put('credentialsId', 'github_bjartek')
+props.put('credentialsId', 'github')
 
 node {
     stage('Checkout and Preparation') {
