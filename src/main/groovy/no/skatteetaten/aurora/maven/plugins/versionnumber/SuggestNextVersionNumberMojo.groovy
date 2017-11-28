@@ -27,21 +27,25 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = 'master', required = true)
   String branchesToInferReleaseVersionsForCsv
 
+  @Parameter(defaultValue = "master", readonly = false)
+  String branchesToUseTagsAsVersionsForCsv
+
   @Parameter(defaultValue = '${project}', readonly = true)
-  private MavenProject project;
+  private MavenProject project
 
   void execute() {
 
     List<String> branchesToInferReleaseVersionsFor = []
-
     if (inferReleaseVersionsForBranches) {
       branchesToInferReleaseVersionsFor = branchesToInferReleaseVersionsForCsv.split(',').collect { it.trim() }
     }
+    List<String> branchesToUseTagsAsVersionsFor = branchesToUseTagsAsVersionsForCsv.split(',').collect { it.trim() }
 
     def options = new SuggesterOptions(
         versionPrefix: tagBaseName,
         branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
-        versionHint: currentVersion
+        versionHint: currentVersion,
+        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor
     )
 
     String suggestedVersion = VersionNumberSuggester.suggestVersion(options)
