@@ -30,8 +30,17 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = "master", readonly = false)
   String branchesToUseTagsAsVersionsForCsv
 
+  @Parameter(defaultValue = "", required = false)
+  String branchPrefixesForForcedPatchSegmentUpdate
+
+  @Parameter(defaultValue = "", required = false)
+  String branchPrefixesForForcedMinorSegmentUpdate
+
   @Parameter(defaultValue = '${project}', readonly = true)
   private MavenProject project
+
+  def determineVersionNumberBasedOnBranchPrefix =
+      !branchPrefixesForForcedPatchSegmentUpdate.isEmpty() || !branchPrefixesForForcedPatchSegmentUpdate.isEmpty()
 
   void execute() {
 
@@ -45,7 +54,10 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
         versionPrefix: tagBaseName,
         branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
         versionHint: currentVersion,
-        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor
+        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor,
+        patchUpdateBranchPrefix: branchPrefixesForForcedPatchSegmentUpdate,
+        minorUpdateBranchPrefix: branchPrefixesForForcedMinorSegmentUpdate,
+        determineVersionNumberBasedOnBranchPrefix: determineVersionNumberBasedOnBranchPrefix
     )
 
     String suggestedVersion = VersionNumberSuggester.suggestVersion(options)
