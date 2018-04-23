@@ -120,7 +120,7 @@
     <dependency>
       <groupId>no.skatteetaten.aurora</groupId>
       <artifactId>aurora-git-version</artifactId>
-      <version>2.1.1</version>
+      <version>PR_5-SNAPSHOT</version> <!-- TODO - replace with release version when PR is merged -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>

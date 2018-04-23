@@ -30,6 +30,12 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = "master", readonly = false)
   String branchesToUseTagsAsVersionsForCsv
 
+  @Parameter(defaultValue = "", required = false)
+  String forcePatchIncrementForBranchPrefixes
+
+  @Parameter(defaultValue = "", required = false)
+  String forceMinorIncrementForBranchPrefixes
+
   @Parameter(defaultValue = '${project}', readonly = true)
   private MavenProject project
 
@@ -45,7 +51,9 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
         versionPrefix: tagBaseName,
         branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
         versionHint: currentVersion,
-        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor
+        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor,
+        forcePatchIncrementForBranchPrefixes: forcePatchIncrementForBranchPrefixes,
+        forceMinorIncrementForBranchPrefixes: forceMinorIncrementForBranchPrefixes
     )
 
     String suggestedVersion = VersionNumberSuggester.suggestVersion(options)
