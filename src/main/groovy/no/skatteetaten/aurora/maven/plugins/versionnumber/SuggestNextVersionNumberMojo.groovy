@@ -30,10 +30,10 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = "master", readonly = false)
   String branchesToUseTagsAsVersionsForCsv
 
-  @Parameter(defaultValue = "", required = false)
+  @Parameter(property = "forcePatchIncrementForBranchPrefixes", defaultValue = "", required = false)
   String forcePatchIncrementForBranchPrefixes
 
-  @Parameter(defaultValue = "", required = false)
+  @Parameter(property = "forceMinorIncrementForBranchPrefixes", defaultValue = "", required = false)
   String forceMinorIncrementForBranchPrefixes
 
   @Parameter(defaultValue = '${project}', readonly = true)
