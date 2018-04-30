@@ -52,8 +52,8 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
         branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
         versionHint: currentVersion,
         branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor,
-        forcePatchIncrementForBranchPrefixes: forcePatchIncrementForBranchPrefixes,
-        forceMinorIncrementForBranchPrefixes: forceMinorIncrementForBranchPrefixes
+        forcePatchIncrementForBranchPrefixes: commaSeparatedStringToList(forcePatchIncrementForBranchPrefixes),
+        forceMinorIncrementForBranchPrefixes: commaSeparatedStringToList(forceMinorIncrementForBranchPrefixes)
     )
 
     String suggestedVersion = VersionNumberSuggester.suggestVersion(options)
@@ -61,5 +61,17 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
     project.getProperties().put(accessibleFromProperty, suggestedVersion)
     getLog().info("Suggested version (${suggestedVersion}) accessible from \${${accessibleFromProperty}}")
   }
+
+  private List<String> commaSeparatedStringToList(String commaSeparatedString) {
+    if (commaSeparatedString?.trim()) {
+      commaSeparatedString
+          .split(",")
+          .collect { it.trim() }
+          .findAll { !it.isEmpty() }
+    } else {
+      []
+    }
+  }
+
 }
 
