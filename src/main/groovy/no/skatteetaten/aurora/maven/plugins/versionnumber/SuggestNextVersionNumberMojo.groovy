@@ -30,6 +30,12 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = "master", readonly = false)
   String branchesToUseTagsAsVersionsForCsv
 
+  @Parameter(property = "forcePatchIncrementForBranchPrefixes", defaultValue = "", required = false)
+  String forcePatchIncrementForBranchPrefixes
+
+  @Parameter(property = "forceMinorIncrementForBranchPrefixes", defaultValue = "", required = false)
+  String forceMinorIncrementForBranchPrefixes
+
   @Parameter(defaultValue = '${project}', readonly = true)
   private MavenProject project
 
@@ -45,7 +51,9 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
         versionPrefix: tagBaseName,
         branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
         versionHint: currentVersion,
-        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor
+        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor,
+        forcePatchIncrementForBranchPrefixes: commaSeparatedStringToList(forcePatchIncrementForBranchPrefixes),
+        forceMinorIncrementForBranchPrefixes: commaSeparatedStringToList(forceMinorIncrementForBranchPrefixes)
     )
 
     String suggestedVersion = VersionNumberSuggester.suggestVersion(options)
@@ -53,5 +61,17 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
     project.getProperties().put(accessibleFromProperty, suggestedVersion)
     getLog().info("Suggested version (${suggestedVersion}) accessible from \${${accessibleFromProperty}}")
   }
+
+  private List<String> commaSeparatedStringToList(String commaSeparatedString) {
+    if (commaSeparatedString?.trim()) {
+      commaSeparatedString
+          .split(",")
+          .collect { it.trim() }
+          .findAll { !it.isEmpty() }
+    } else {
+      []
+    }
+  }
+
 }
 
