@@ -120,7 +120,7 @@
     <dependency>
       <groupId>no.skatteetaten.aurora</groupId>
       <artifactId>aurora-git-version</artifactId>
-      <version>PR_5-SNAPSHOT</version> <!-- TODO - replace with version when PR is merged -->
+      <version>2.2.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
@@ -138,16 +138,6 @@
       <version>${mavenVersion}</version>
     </dependency>
   </dependencies>
-
-  <!-- TODO - to make jenkins download the snapshot - remove when PR_5 for aurora-git-version is merged -->
-  <repositories>
-    <repository>
-      <id>snapshots-repo</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <releases><enabled>false</enabled></releases>
-      <snapshots><enabled>true</enabled></snapshots>
-    </repository>
-  </repositories>
 
   <profiles>
     <profile>
