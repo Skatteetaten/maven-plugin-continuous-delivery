@@ -27,7 +27,7 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = 'master', required = true)
   String branchesToInferReleaseVersionsForCsv
 
-  @Parameter(defaultValue = "master", readonly = false)
+  @Parameter(defaultValue = "master", required = false)
   String branchesToUseTagsAsVersionsForCsv
 
   @Parameter(property = "forcePatchIncrementForBranchPrefixes", defaultValue = "", required = false)
@@ -41,17 +41,11 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
 
   void execute() {
 
-    List<String> branchesToInferReleaseVersionsFor = []
-    if (inferReleaseVersionsForBranches) {
-      branchesToInferReleaseVersionsFor = branchesToInferReleaseVersionsForCsv.split(',').collect { it.trim() }
-    }
-    List<String> branchesToUseTagsAsVersionsFor = branchesToUseTagsAsVersionsForCsv.split(',').collect { it.trim() }
-
     def options = new SuggesterOptions(
         versionPrefix: tagBaseName,
-        branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
+        branchesToInferReleaseVersionsFor: commaSeparatedStringToList(branchesToInferReleaseVersionsForCsv),
         versionHint: currentVersion,
-        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor,
+        branchesToUseTagsAsVersionsFor: commaSeparatedStringToList(branchesToUseTagsAsVersionsForCsv),
         forcePatchIncrementForBranchPrefixes: commaSeparatedStringToList(forcePatchIncrementForBranchPrefixes),
         forceMinorIncrementForBranchPrefixes: commaSeparatedStringToList(forceMinorIncrementForBranchPrefixes)
     )
@@ -62,7 +56,7 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
     getLog().info("Suggested version (${suggestedVersion}) accessible from \${${accessibleFromProperty}}")
   }
 
-  private List<String> commaSeparatedStringToList(String commaSeparatedString) {
+  private static List<String> commaSeparatedStringToList(String commaSeparatedString) {
     if (commaSeparatedString?.trim()) {
       commaSeparatedString
           .split(",")
@@ -72,6 +66,5 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
       []
     }
   }
-
 }
 
