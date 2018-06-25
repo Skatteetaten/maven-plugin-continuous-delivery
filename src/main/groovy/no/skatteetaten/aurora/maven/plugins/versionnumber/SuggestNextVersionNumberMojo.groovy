@@ -27,7 +27,7 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
   @Parameter(defaultValue = 'master', required = true)
   String branchesToInferReleaseVersionsForCsv
 
-  @Parameter(defaultValue = "master", readonly = false)
+  @Parameter(property = "branchesToUseTagsAsVersionsForCsv", defaultValue = "master", required = false)
   String branchesToUseTagsAsVersionsForCsv
 
   @Parameter(property = "forcePatchIncrementForBranchPrefixes", defaultValue = "", required = false)
@@ -41,20 +41,19 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
 
   void execute() {
 
-    List<String> branchesToInferReleaseVersionsFor = []
-    if (inferReleaseVersionsForBranches) {
-      branchesToInferReleaseVersionsFor = branchesToInferReleaseVersionsForCsv.split(',').collect { it.trim() }
-    }
-    List<String> branchesToUseTagsAsVersionsFor = branchesToUseTagsAsVersionsForCsv.split(',').collect { it.trim() }
+    def branchesToInferReleaseVersionsFor = inferReleaseVersionsForBranches ?
+        commaSeparatedStringToList(branchesToInferReleaseVersionsForCsv) : []
 
     def options = new SuggesterOptions(
         versionPrefix: tagBaseName,
         branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
         versionHint: currentVersion,
-        branchesToUseTagsAsVersionsFor: branchesToUseTagsAsVersionsFor,
+        branchesToUseTagsAsVersionsFor: commaSeparatedStringToList(branchesToUseTagsAsVersionsForCsv),
         forcePatchIncrementForBranchPrefixes: commaSeparatedStringToList(forcePatchIncrementForBranchPrefixes),
         forceMinorIncrementForBranchPrefixes: commaSeparatedStringToList(forceMinorIncrementForBranchPrefixes)
     )
+
+    getLog().info("Using SuggesterOptions ${options.properties.toString()}")
 
     String suggestedVersion = VersionNumberSuggester.suggestVersion(options)
 
@@ -62,7 +61,7 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
     getLog().info("Suggested version (${suggestedVersion}) accessible from \${${accessibleFromProperty}}")
   }
 
-  private List<String> commaSeparatedStringToList(String commaSeparatedString) {
+  private static List<String> commaSeparatedStringToList(String commaSeparatedString) {
     if (commaSeparatedString?.trim()) {
       commaSeparatedString
           .split(",")
@@ -72,6 +71,5 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
       []
     }
   }
-
 }
 
