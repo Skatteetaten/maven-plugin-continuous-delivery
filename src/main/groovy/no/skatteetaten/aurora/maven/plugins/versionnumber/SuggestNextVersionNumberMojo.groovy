@@ -53,6 +53,8 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
         forceMinorIncrementForBranchPrefixes: commaSeparatedStringToList(forceMinorIncrementForBranchPrefixes)
     )
 
+    getLog().info("Using SuggesterOptions ${options.properties.toString()}")
+
     String suggestedVersion = VersionNumberSuggester.suggestVersion(options)
 
     project.getProperties().put(accessibleFromProperty, suggestedVersion)
