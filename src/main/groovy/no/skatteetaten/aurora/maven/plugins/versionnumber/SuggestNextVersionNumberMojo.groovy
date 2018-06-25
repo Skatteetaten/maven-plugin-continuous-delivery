@@ -41,9 +41,12 @@ class SuggestNextVersionNumberMojo extends AbstractMojo {
 
   void execute() {
 
+    def branchesToInferReleaseVersionsFor = inferReleaseVersionsForBranches ?
+        commaSeparatedStringToList(branchesToInferReleaseVersionsForCsv) : []
+
     def options = new SuggesterOptions(
         versionPrefix: tagBaseName,
-        branchesToInferReleaseVersionsFor: commaSeparatedStringToList(branchesToInferReleaseVersionsForCsv),
+        branchesToInferReleaseVersionsFor: branchesToInferReleaseVersionsFor,
         versionHint: currentVersion,
         branchesToUseTagsAsVersionsFor: commaSeparatedStringToList(branchesToUseTagsAsVersionsForCsv),
         forcePatchIncrementForBranchPrefixes: commaSeparatedStringToList(forcePatchIncrementForBranchPrefixes),
